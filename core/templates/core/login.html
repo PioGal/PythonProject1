@@ -1,0 +1,36 @@
+{% load static %}
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>Logowanie</title>
+  <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body class="auth-page">
+
+  <header class="top-banner">
+    <h1>Testowa Firma</h1>
+  </header>
+
+  <main class="auth-container">
+    <h2>Logowanie</h2>
+
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+
+      <div class="form-row">
+        <label for="id_username">Login</label>
+        {{ form.username }}
+      </div>
+
+      <div class="form-row">
+        <label for="id_password">Hasło</label>
+        {{ form.password }}
+      </div>
+
+      <button type="submit">Zaloguj się</button>
+    </form>
+  </main>
+
+</body>
+</html>

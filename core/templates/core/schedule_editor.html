@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Edytor grafiku{% endblock %}
+
+{% block content %}
+  <h2>Edytor grafiku</h2>
+
+  {% if not team %}
+    <p>Nie masz przypisanego zespołu.</p>
+  {% else %}
+    <p><strong>Zespół:</strong> {{ team.name }}</p>
+
+    <form method="get" style="margin: 12px 0;">
+      <label>Pracownik:</label>
+      <select name="employee" onchange="this.form.submit()">
+        {% for e in employees %}
+          <option value="{{ e.id }}" {% if selected_employee and e.id == selected_employee.id %}selected{% endif %}>
+            {{ e.user.first_name }} {{ e.user.last_name }} ({{ e.position }})
+          </option>
+        {% endfor %}
+      </select>
+    </form>
+
+    <div class="calendar" id="calendar"
+         data-employee-id="{{ selected_employee.id }}">
+      <div class="calendar-header">
+        <div class="corner"></div>
+        {% for d in days %}
+          <div class="day-head">
+            {{ d|date:"D" }}<br>
+            {{ d|date:"Y-m-d" }}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="calendar-body">
+        {% for h in hours %}
+          <div class="hour-row">
+            <div class="hour-label">{{ h }}:00</div>
+
+            {% for d in days %}
+              <div class="slot"
+                   data-date="{{ d|date:'Y-m-d' }}"
+                   data-hour="{{ h }}"></div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <p style="margin-top:14px; color:#666;">
+      Zaznacz: kliknij w godzinę i przeciągnij w dół w obrębie jednego dnia.
+    </p>
+  {% endif %}
+
+  <script src="{% static 'core/app.js' %}"></script>
+{% endblock %}

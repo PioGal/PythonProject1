@@ -1,0 +1,248 @@
+/* top bar */
+.top-banner {
+  background: #1e88e5;
+  color: white;
+  padding: 18px 24px;
+  text-align: center;
+}
+
+.app-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+}
+
+.app-banner h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* hamburger button */
+.menu-btn {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* page content below top bar */
+.page.with-topbar {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 1000;
+}
+.overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* sidebar - wysuwa się z lewej, zaczyna się pod belką */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;                  /* jeśli chcesz, żeby menu było od samej góry */
+  /* top: 60px; */          /* odkomentuj, jeśli sidebar ma zaczynać się POD belką */
+  width: 280px;
+  height: 100vh;           /* albo: calc(100vh - 60px) jeśli top:60px */
+  background: #ffffff;
+  box-shadow: 6px 0 18px rgba(0,0,0,0.15);
+  transform: translateX(-100%);
+  transition: transform 200ms ease;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar-title { font-weight: 700; }
+
+.close-btn {
+  background: transparent;
+  border: 0;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.sidebar-nav a {
+  padding: 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #1a1a1a;
+}
+.sidebar-nav a:hover {
+  background: #f2f4f7;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px 16px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+/* ===== Dashboard ===== */
+/* ===== Dashboard ===== */
+.dashboard-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-tile {
+  display: block;
+  padding: 22px;
+  text-decoration: none;
+  color: #1a1a1a;
+
+  background: #f1f1f1;
+  border: 2px solid #3a3a3a;
+  box-shadow: none;
+
+
+  clip-path: polygon(
+    12px 0, calc(100% - 12px) 0,
+    100% 12px, 100% calc(100% - 12px),
+    calc(100% - 12px) 100%, 12px 100%,
+    0 calc(100% - 12px), 0 12px
+  );
+
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.dashboard-tile h3 {
+  margin: 0 0 8px 0;
+}
+
+.dashboard-tile p {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.dashboard-tile:hover {
+  transform: translateY(-3px);
+  background: #e9e9e9;
+}
+
+.planner { margin-top: 18px; display: grid; gap: 8px; }
+.planner-head, .planner-row {
+  display: grid;
+  grid-template-columns: 220px 110px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.time-grid{
+  display: grid;
+  grid-template-columns: repeat(48, 1fr);
+  gap: 1px;
+  background: #cfcfcf;
+  padding: 1px;
+  user-select: none;
+}
+
+.slot{
+  height: 22px;
+  background: #f3f3f3;
+}
+
+.slot.selected{
+  background: #9cc6ff;
+}
+
+.slot:hover{
+  outline: 1px solid #888;
+}
+
+.calendar {
+  margin-top: 14px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  overflow: auto;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 140px);
+  position: sticky;
+  top: 0;
+  background: #f7f7f7;
+  border-bottom: 1px solid #d0d0d0;
+  z-index: 2;
+}
+
+.corner {
+  border-right: 1px solid #d0d0d0;
+}
+
+.day-head {
+  padding: 10px;
+  border-right: 1px solid #d0d0d0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.calendar-body .hour-row {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 140px);
+}
+
+.hour-label {
+  padding: 8px 10px;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+  color: #444;
+  background: #fafafa;
+}
+
+.slot {
+  height: 34px;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  cursor: crosshair;
+}
+
+.slot.selected {
+  background: rgba(0, 120, 255, 0.20);
+}
+
+.slot.saved {
+  background: rgba(0, 160, 80, 0.18);
+}

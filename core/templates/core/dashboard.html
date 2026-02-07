@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block title %}Pulpit{% endblock %}
+
+{% block content %}
+  <h2>
+    Pulpit – {{ request.user.first_name }} {{ request.user.last_name }}
+  </h2>
+
+  <div class="dashboard-grid">
+    <a href="{% url 'employee' %}" class="dashboard-tile">
+      <h3>Dane pracownika</h3>
+      <p>Sprawdź swoje dane i stanowisko</p>
+    </a>
+
+    <a href="{% url 'schedule' %}" class="dashboard-tile">
+      <h3>Grafik pracy</h3>
+      <p>Zobacz grafik swojego zespołu</p>
+    </a>
+
+      {% if perms.core.add_shift %}
+      <a href="{% url 'shift_create' %}" class="dashboard-tile">
+        <h3>Dodaj zmianę</h3>
+        <p>Ustaw grafik dla zespołu</p>
+      </a>
+    {% endif %}
+  </div>
+{% endblock %}

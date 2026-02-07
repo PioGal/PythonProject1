@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Firma testowa{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+
+<header class="top-banner app-banner">
+  <button class="menu-btn" id="openMenu" aria-label="Otwórz menu">☰</button>
+  <h1>Firma testowa</h1>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <div class="sidebar-header">
+    <div class="sidebar-title">Menu</div>
+    <button class="close-btn" id="closeMenu" aria-label="Zamknij menu">✕</button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="{% url 'employee' %}">Dane pracownika</a>
+    <a href="{% url 'schedule' %}">Grafik pracy</a>
+    <a href="{% url 'logout' %}">Wyloguj</a>
+    <a href="{% url 'dashboard' %}">Pulpit</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    Zalogowany: <strong>{{ request.user.username }}</strong>
+  </div>
+</aside>
+
+<main class="page with-topbar">
+  {% block content %}{% endblock %}
+</main>
+
+<script src="{% static 'core/app.js' %}"></script>
+</body>
+</html>

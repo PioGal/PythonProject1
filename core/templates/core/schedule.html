@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% block title %}Grafik pracy{% endblock %}
+
+{% block content %}
+  <h2>Grafik pracy</h2>
+
+  {% if not team %}
+    <p>Nie masz przypisanego zespołu. Skontaktuj się z administratorem.</p>
+  {% else %}
+    <p><strong>Zespół:</strong> {{ team.name }}</p>
+
+    {% if shifts %}
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Godziny</th>
+            <th>Uwagi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in shifts %}
+            <tr>
+              <td>{{ s.date }}</td>
+              <td>{{ s.start_time }} – {{ s.end_time }}</td>
+              <td>{{ s.note|default:"-" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Brak wpisów w grafiku.</p>
+    {% endif %}
+  {% endif %}
+{% endblock %}

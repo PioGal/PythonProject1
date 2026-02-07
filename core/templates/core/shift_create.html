@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+{% block title %}Dodaj zmianę{% endblock %}
+
+{% if team %}
+  <p><strong>Zespół:</strong> {{ team.name }}</p>
+{% endif %}
+
+{% block content %}
+  <h2>Dodaj zmianę</h2>
+
+  <form method="post" class="auth-form" style="max-width: 520px;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Zapisz</button>
+  </form>
+{% endblock %}
