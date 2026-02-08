@@ -26,6 +26,13 @@
     <a href="{% url 'schedule' %}">Grafik pracy</a>
     <a href="{% url 'logout' %}">Wyloguj</a>
     <a href="{% url 'dashboard' %}">Pulpit</a>
+      {% if perms.core.add_shift %}
+  <li>
+    <a href="{% url 'schedule_editor' %}">
+      Edytuj grafik
+    </a>
+  </li>
+{% endif %}
   </nav>
 
   <div class="sidebar-footer">
