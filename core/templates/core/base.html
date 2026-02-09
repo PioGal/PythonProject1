@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>{% block title %}Firma testowa{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'core/style.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
 </head>
 <body>
 
@@ -24,14 +26,23 @@
   <nav class="sidebar-nav">
     <a href="{% url 'employee' %}">Dane pracownika</a>
     <a href="{% url 'schedule' %}">Grafik pracy</a>
-    <a href="{% url 'logout' %}">Wyloguj</a>
-    <a href="{% url 'dashboard' %}">Pulpit</a>
+      <a href="{% url 'dashboard' %}">Pulpit</a>
       {% if perms.core.add_shift %}
+
+
   <li>
     <a href="{% url 'schedule_editor' %}">
       Edytuj grafik
     </a>
   </li>
+         <div class="sidebar-footer">
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="logout-btn">
+      Wyloguj
+    </button>
+  </form>
+</div>
 {% endif %}
   </nav>
 
@@ -43,6 +54,9 @@
 <main class="page with-topbar">
   {% block content %}{% endblock %}
 </main>
+<footer class="app-footer">
+  Projekt wykonany przez: <strong>Piotr Galiński</strong>
+</footer>
 
 <script src="{% static 'core/app.js' %}"></script>
 </body>

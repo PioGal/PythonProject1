@@ -23,7 +23,8 @@
     </form>
 
     <div class="calendar" id="calendar"
-         data-employee-id="{{ selected_employee.id }}">
+     data-employee-id="{{ selected_employee.id }}"
+     data-save-url="{% url 'schedule_apply' %}">
       <div class="calendar-header">
         <div class="corner"></div>
         {% for d in days %}
@@ -40,10 +41,18 @@
             <div class="hour-label">{{ h }}:00</div>
 
             {% for d in days %}
-              <div class="slot"
-                   data-date="{{ d|date:'Y-m-d' }}"
-                   data-hour="{{ h }}"></div>
-            {% endfor %}
+{% with day=d|date:"Y-m-d" %}
+  {% with hs=h|stringformat:"s" %}
+    {% with key=day|add:"|"|add:hs %}
+      <div class="slot {% if key in busy_map %}busy{% endif %}"
+           data-date="{{ day }}"
+           data-hour="{{ h }}"></div>
+    {% endwith %}
+  {% endwith %}
+{% endwith %}
+
+{% endfor %}
+
           </div>
         {% endfor %}
       </div>

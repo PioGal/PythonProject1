@@ -11,8 +11,8 @@ urlpatterns = [
     path("pracownik/", views.employee, name="employee"),
     path("grafik/", views.schedule, name="schedule"),
     path("pulpit/", views.dashboard, name="dashboard"),
-
     path("grafik/edytuj/", views.schedule_editor, name="schedule_editor"),
+    path("grafik/zapisz/", views.schedule_apply, name="schedule_apply"),
     path("api/shifts/create/", views.shift_create_api, name="shift_create_api"),
     path("zmiana/dodaj/", views.shift_create, name="shift_create"),
 ]

@@ -246,3 +246,53 @@
 .slot.saved {
   background: rgba(0, 160, 80, 0.18);
 }
+
+/* --- FORCED COLORS FOR CALENDAR --- */
+.calendar .slot.busy {
+  background: #b8f5b8;
+  border-color: #2f6f2f;
+}
+
+#calendar-view .slot {
+  cursor: default;
+}
+.calendar .slot.selected {
+  background: rgba(0, 120, 255, 0.20) !important;
+}
+.slot.busy {
+  background: #3cb371; /* zielony */
+}
+.app-footer {
+  margin-top: auto;
+  background: #f0f0f0;
+  color: #777;
+  text-align: center;
+  padding: 12px 16px;
+  font-size: 13px;
+  border-top: 1px solid #ddd;
+}
+.form-standard {
+  max-width: 420px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  column-gap: 50px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.form-row label {
+  text-align: right;
+  font-weight: 500;
+}
+
+.form-row input {
+  width: 200px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+}
+.form-standard button {
+  margin-left: calc(150px + 50px);
+}

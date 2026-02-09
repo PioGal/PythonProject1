@@ -1,35 +1,47 @@
 {% extends "core/base.html" %}
-{% block title %}Grafik pracy{% endblock %}
+{% load static %}
+
+{% block title %}Grafik{% endblock %}
 
 {% block content %}
   <h2>Grafik pracy</h2>
 
   {% if not team %}
-    <p>Nie masz przypisanego zespołu. Skontaktuj się z administratorem.</p>
+    <p>Nie masz przypisanego zespołu.</p>
   {% else %}
+    <p><strong>Pracownik:</strong> {{ employee.user.first_name }} {{ employee.user.last_name }}</p>
     <p><strong>Zespół:</strong> {{ team.name }}</p>
 
-    {% if shifts %}
-      <table class="schedule-table">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Godziny</th>
-            <th>Uwagi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for s in shifts %}
-            <tr>
-              <td>{{ s.date }}</td>
-              <td>{{ s.start_time }} – {{ s.end_time }}</td>
-              <td>{{ s.note|default:"-" }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>Brak wpisów w grafiku.</p>
-    {% endif %}
+    <div class="calendar" id="calendar-view">
+      <div class="calendar-header">
+        <div class="corner"></div>
+        {% for d in days %}
+          <div class="day-head">
+            {{ d|date:"D" }}<br>
+            {{ d|date:"Y-m-d" }}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="calendar-body">
+        {% for h in hours %}
+          <div class="hour-row">
+            <div class="hour-label">{{ h }}:00</div>
+
+            {% for d in days %}
+              {% with day=d|date:"Y-m-d" %}
+                {% with hs=h|stringformat:"s" %}
+                  {% with key=day|add:"|"|add:hs %}
+                    <div class="slot {% if key in busy_map %}busy{% endif %}"
+                         data-date="{{ day }}"
+                         data-hour="{{ h }}"></div>
+                  {% endwith %}
+                {% endwith %}
+              {% endwith %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   {% endif %}
 {% endblock %}

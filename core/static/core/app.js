@@ -153,9 +153,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!cal) return;
 
   const employeeId = cal.dataset.employeeId;
+  const saveUrl = cal.dataset.saveUrl;
+
   let isDown = false;
   let startSlot = null;
   let currentDate = null;
+  let mode = "add"; // add albo remove
 
   const clearTemp = () => {
     document.querySelectorAll(".slot.selected").forEach(el => el.classList.remove("selected"));
@@ -171,44 +174,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  cal.addEventListener("mousedown", (e) => {
-    const slot = e.target.closest(".slot");
-    if (!slot) return;
-
-    isDown = true;
-    startSlot = slot;
-    currentDate = slot.dataset.date;
-    highlightRange(parseInt(slot.dataset.hour, 10), parseInt(slot.dataset.hour, 10), currentDate);
-    e.preventDefault();
-  });
-
-  cal.addEventListener("mouseover", (e) => {
-    if (!isDown) return;
-    const slot = e.target.closest(".slot");
-    if (!slot) return;
-
-    // blokujemy przeciąganie na inne dni (w tej wersji)
-    if (slot.dataset.date !== currentDate) return;
-
-    const startHour = parseInt(startSlot.dataset.hour, 10);
-    const endHour = parseInt(slot.dataset.hour, 10);
-    highlightRange(startHour, endHour, currentDate);
-  });
-
   const getCSRF = () => {
     const m = document.cookie.match(/csrftoken=([^;]+)/);
     return m ? m[1] : "";
   };
 
-  const saveSelection = async () => {
+  async function applySelection() {
     const selected = Array.from(document.querySelectorAll(`.slot.selected[data-date="${currentDate}"]`));
-    if (selected.length === 0) return;
+    if (!selected.length) return;
 
     const hours = selected.map(el => parseInt(el.dataset.hour, 10)).sort((a,b)=>a-b);
     const startHour = hours[0];
-    const endHour = hours[hours.length - 1] + 1; // koniec to następna pełna godzina
+    const endHour = hours[hours.length - 1] + 1;
 
-    const res = await fetch("/api/shifts/create/", {
+    const res = await fetch(saveUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -218,28 +197,63 @@ document.addEventListener("DOMContentLoaded", () => {
         employee_id: employeeId,
         date: currentDate,
         start_hour: startHour,
-        end_hour: endHour
+        end_hour: endHour,
+        action: mode, // "add" albo "remove"
       })
     });
 
     const data = await res.json().catch(() => ({}));
     if (!res.ok || !data.ok) {
-      alert(data.error || "Błąd zapisu zmiany");
+      alert(data.error || "Błąd zapisu");
       return;
     }
 
-    // oznacz jako zapisane
+    // aktualizacja UI
     selected.forEach(el => {
       el.classList.remove("selected");
-      el.classList.add("saved");
+      if (mode === "add") el.classList.add("busy");
+      if (mode === "remove") el.classList.remove("busy");
     });
-  };
+  }
+
+  cal.addEventListener("mousedown", (e) => {
+    const slot = e.target.closest(".slot");
+    if (!slot) return;
+
+    isDown = true;
+    startSlot = slot;
+    currentDate = slot.dataset.date;
+
+    // jeśli zaczynamy na zielonym -> usuwamy, inaczej dodajemy
+    mode = slot.classList.contains("busy") ? "remove" : "add";
+
+    const h = parseInt(slot.dataset.hour, 10);
+    highlightRange(h, h, currentDate);
+    e.preventDefault();
+  });
+
+  cal.addEventListener("mouseover", (e) => {
+    if (!isDown) return;
+    const slot = e.target.closest(".slot");
+    if (!slot) return;
+
+    if (slot.dataset.date !== currentDate) return;
+
+    const startHour = parseInt(startSlot.dataset.hour, 10);
+    const endHour = parseInt(slot.dataset.hour, 10);
+    highlightRange(startHour, endHour, currentDate);
+  });
 
   document.addEventListener("mouseup", async () => {
     if (!isDown) return;
     isDown = false;
-    await saveSelection();
+
+    await applySelection();
+
     startSlot = null;
     currentDate = null;
+    mode = "add";
   });
 });
+
+
